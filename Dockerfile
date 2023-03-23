@@ -12,7 +12,7 @@ COPY /telegram-bot-api/telegram-bot-api ./telegram-bot-api
 
 WORKDIR /app/build
 
-RUN CXXFLAGS="-stdlib=libc++" CC=/usr/bin/clang-14 CXX=/usr/bin/clang++-14 cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX:PATH=.. .. && \
+RUN CXXFLAGS="-stdlib=libc++" CC=/usr/bin/clang-14 CXX=/usr/bin/clang++-14 cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX:PATH=/usr/local .. && \
     cmake --build . --target install
 
 EXPOSE 8081/tcp 8082/tcp
@@ -23,4 +23,4 @@ HEALTHCHECK \
     --retries=3 \
     CMD nc -z localhost 8081 || exit 1
 
-ENTRYPOINT ["/app/build"]
+ENTRYPOINT ["/usr/local/bin/telegram-bot-api"]
