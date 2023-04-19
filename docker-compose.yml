@@ -1,0 +1,12 @@
+version: '3'
+services:
+  telegram.server:
+    image: altair4713/telegram-bot-api-server
+    environment:
+      TELEGRAM_API_ID: '${TELEGRAM_API_ID}'
+      TELEGRAM_API_HASH: '${TELEGRAM_API_HASH}'
+    extra_hosts:
+      - 'host.docker.internal:host-gateway'
+    ports:
+      - '8081:8081'
+      - '8082:8082'

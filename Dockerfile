@@ -1,18 +1,19 @@
-FROM ubuntu:22.04
+FROM alpine:latest
 
-RUN apt-get update && apt-get upgrade -y
+LABEL maintainer="AltairWN"
+LABEL version="1.0.0"
 
-RUN apt-get install -y make git zlib1g-dev libssl-dev gperf cmake clang-14 libc++-dev libc++abi-dev
+RUN apk update && apk upgrade
+
+RUN apk add --update alpine-sdk linux-headers git zlib-dev openssl-dev gperf cmake
 
 WORKDIR /app
 
-COPY /telegram-bot-api/CMakeLists.txt .
-COPY /telegram-bot-api/td ./td
-COPY /telegram-bot-api/telegram-bot-api ./telegram-bot-api
+RUN git clone --recursive https://github.com/tdlib/telegram-bot-api.git
 
-WORKDIR /app/build
+WORKDIR /app/telegram-bot-api/build
 
-RUN CXXFLAGS="-stdlib=libc++" CC=/usr/bin/clang-14 CXX=/usr/bin/clang++-14 cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX:PATH=/usr/local .. && \
+RUN cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX:PATH=/usr/local .. && \
     cmake --build . --target install
 
 EXPOSE 8081/tcp 8082/tcp
