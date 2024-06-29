@@ -18,4 +18,6 @@ RUN cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX:PATH=/usr/local .. &
 
 EXPOSE 8081/tcp 8082/tcp
 
+RUN rm -rf /app
+
 ENTRYPOINT ["/usr/local/bin/telegram-bot-api"]
